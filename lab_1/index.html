@@ -1,5 +1,78 @@
 <!DOCTYPE html>
-<html>
-  <title> Hello, World! </title>
-  <body> You are not supposed to be seeing this. </body>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <title> Вавилонский магазин </title>
+
+    <script src="script.js"></script>
+    <link href="style.css" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav>
+      <ul class="left">
+        <a href="">Вавилонский магазин</a>
+      </ul>
+      <ul class="right">
+        <a id="github-icon" href="https://github.com/leetrat/itmo-web/tree/main/lab_1"></a>
+        <a id="qr-code" href="#qr"></a>
+      </ul>
+    </nav>
+
+    <input type="search" placeholder="Ищите что угодно...">
+    <div class="left">
+      <section class="history">
+        <strong>Просмотренные ранее товары:</strong>
+        <div class="item-list">
+          <span class="item">
+            <img >
+            <span class="row">
+              Item name
+              <a class="price-tag">$4</a>
+            </span>
+            <input type="button" value="Купить">
+          </span>
+        </div>
+      </section>
+
+      <section class="featured">
+        <strong>Популярные:</strong>
+        <div class="item-list">
+          <span class="item">
+            <img >
+            <span class="row">
+              Item name
+              <a class="price-tag">$5</a>
+            </span>
+            <input type="button" value="Купить">
+          </span>
+        </div>
+      </section>
+    </div>
+
+    <div class="right">
+      <section class="checkout">
+
+        <strong>Корзина:</strong>
+
+        <div class="item-list">
+          <span class="item">
+            <img >
+            <span class="row">
+              Item name
+              <a class="price-tag">$6</a>
+            </span>
+            <input type="button" value="Убрать">
+          </span>
+        </div>
+
+        <div class="row">
+          <a class="price-tag"></a>
+          <input type="button" value="К покупке">
+        </div>
+      </section>
+    </div>
+
+  </body>
 </html>

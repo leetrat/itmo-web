@@ -1,0 +1,333 @@
+:root {
+  --bg: #f6f6f4;
+  --surface: #ffffff;
+  --surface-2: #fafaf9;
+  --border: #e4e3df;
+
+  --text: #1c1b19;
+  --text-muted: #6f6c66;
+
+  --accent: #a86a1f;
+  --accent-soft: #fbf3e6;
+  --accent-contrast: #ffffff;
+
+  --danger: #c0392b;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  --transition: 160ms ease-in-out;
+  --content-width: 1200px;
+  --sidebar-width: 340px;
+  --gutter: 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--text);
+  background-color: var(--bg);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+  grid-template-areas:
+    "nav nav"
+    "search search"
+    "left right";
+  align-content: start;
+  gap: 24px;
+  padding: 0 var(--gutter) 48px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+strong {
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+nav {
+  grid-area: nav;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 14px var(--gutter);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+nav ul {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav ul.left a {
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: color var(--transition);
+}
+
+nav ul.left a:hover {
+  color: var(--accent);
+}
+
+#github-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url("assets/github.svg") center / contain no-repeat;
+  filter: invert(100%);
+  transition: opacity var(--transition);
+}
+
+#github-icon:hover {
+  opacity: 0.6;
+}
+
+body > input[type="search"] {
+  grid-area: search;
+  width: 100%;
+  max-width: var(--content-width);
+  justify-self: center;
+  margin: 0;
+  padding: 13px 18px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+body > input[type="search"]::placeholder {
+  color: var(--text-muted);
+}
+
+body > input[type="search"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+body > .left {
+  grid-area: left;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+body > .right {
+  grid-area: right;
+  min-width: 0;
+  align-self: start;
+  position: sticky;
+  top: 84px;
+}
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+section > strong {
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* ---------- Сетка товаров ---------- */
+
+.item-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.item:hover {
+  transform: translateY(-3px);
+  border-color: #d9d5cd;
+  box-shadow: var(--shadow-card);
+}
+
+.item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #eeeDE8;
+  border-radius: 6px;
+}
+
+.item .row {
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.price-tag {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+}
+
+input[type="button"] {
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent-contrast);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+input[type="button"]:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+input[type="button"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.checkout input[type="button"][value="Убрать"] {
+  color: var(--danger);
+  background: var(--surface);
+  border-color: #e6c9c4;
+}
+
+.checkout input[type="button"][value="Убрать"]:hover {
+  color: var(--accent-contrast);
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+.checkout .row {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.checkout .row .price-tag {
+  font-size: 1.15rem;
+  padding: 6px 14px;
+}
+
+.checkout .row input[type="button"] {
+  flex: 1;
+  min-width: 140px;
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --sidebar-width: 300px;
+    --gutter: 18px;
+  }
+
+  .item-list {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "nav"
+      "search"
+      "left"
+      "right";
+    gap: 20px;
+  }
+
+  body > .right {
+    position: static;
+  }
+}
+
+@media (max-width: 520px) {
+  :root {
+    --gutter: 14px;
+  }
+
+  nav {
+    padding: 12px var(--gutter);
+  }
+
+  nav ul.left a {
+    font-size: 1.1rem;
+  }
+
+  section {
+    padding: 16px;
+  }
+
+  .item-list {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .checkout .row input[type="button"] {
+    width: 100%;
+  }
+}
