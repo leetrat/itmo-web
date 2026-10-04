@@ -196,11 +196,18 @@ section > strong {
   box-shadow: var(--shadow-card);
 }
 
-.item img {
+.item .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
-  background: #eeeDE8;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
+  line-height: 1;
+  text-align: center;
+  overflow: hidden;
+  background: #eeede8;
   border-radius: 6px;
 }
 
