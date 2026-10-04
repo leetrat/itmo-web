@@ -20,10 +20,12 @@
       </ul>
     </nav>
 
-    <input type="search" placeholder="Ищите что угодно...">
+    <input type="search" placeholder="Ищите что угодно..." oninput="searchItems(this.value)">
     <div class="left">
       <section class="search-result">
+        <div class="item-list" id="created">
 
+        </div>
       </section>
 
       <section class="featured">

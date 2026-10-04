@@ -1,11 +1,10 @@
 // TODO (by priority):
-// - Featured items
 // - Custom search items support
 // - Checkout
 // - Cart to localStorage
 // - QR-code at #qr
 
-const items = [
+const featured_items = [
   {name:"𒀭𒂗", icon: "🗿", price:47},
   {name:"ܫܩܠܐ", icon: "🧿", price:82},
   {name:"مِبخرة", icon: "🕯️", price:34},
@@ -18,6 +17,10 @@ const items = [
   { name: "シラベ", icon: "🌲", price: 68 },
   { name: "真鍮皿", icon: "🍽️", price: 52 },
 ];
+
+const recent_items = [];
+
+const items = [...featured_items];
 
 const cart = {
   "name": 0
@@ -147,7 +150,7 @@ function updateCartCount() {
     const item = items.find(i => i.name === name);
     return acc + (item ? item.price * count : 0);
   }, 0);
-  document.getElementById("cart-total").textContent = cartCount;
+  document.getElementById("cart-total").textContent = "$" + cartCount;
 }
 
 function addToCart(itemName) {
@@ -159,6 +162,13 @@ function addToCart(itemName) {
     else cart[itemName] = 1;
     updateCartCount();
     renderCart();
+
+    if (!recent_items.includes(item)) {
+      recent_items.push(item);
+      if (query = document.querySelector("input[type='search']").value)
+        return searchItems(query);
+      renderItems(recent_items, "recent");
+    }
   }
 }
 
@@ -172,6 +182,19 @@ function removeFromCart(itemName) {
   }
 }
 
+function searchItems(query) {
+  const foundFeatured = featured_items.filter(item => item.name.includes(query));
+  renderItems(foundFeatured, "recommended");
+
+  const foundRecent = recent_items.filter(item => item.name.includes(query));
+  renderItems(foundRecent, "recent");
+
+  const foundCreated = [ createItem(query) ];
+  renderItems(foundCreated, "created");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-  renderItems(items, "recommended");
+  updateCartCount();
+  renderItems(featured_items, "recommended");
+  renderCart();
 });
