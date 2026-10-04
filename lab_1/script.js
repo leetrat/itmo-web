@@ -413,6 +413,24 @@ function openQRModal() {
   });
 }
 
+function clearStorage() {
+  if (!confirm("Очистить все данные из localStorage?")) return;
+
+  localStorage.clear();
+
+  custom_items = [];
+  recent_ids = [];
+  cart = {};
+
+  searchInput().value = "";
+
+  renderFeatured();
+  renderRecent();
+  renderCreated();
+  renderCart();
+  updateCartCount();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   custom_items = loadJSON("custom", []);
   recent_ids = loadJSON("recent", []);

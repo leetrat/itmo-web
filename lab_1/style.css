@@ -107,27 +107,34 @@ nav ul.left a:hover {
   color: var(--accent);
 }
 
-#github-icon {
-  display: block;
-  width: 24px;
-  height: 24px;
-  background: url("assets/github.svg") center / contain no-repeat;
-  filter: invert(100%);
-  transition: opacity var(--transition);
-}
-
-#github-icon:hover {
-  opacity: 0.6;
-}
-
+#github-icon,
+#clear-storage,
 #qr-code {
   display: block;
   width: 24px;
   height: 24px;
-  background: url("assets/qr-code.png") center / contain no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
   transition: opacity var(--transition);
 }
 
+#github-icon {
+  background-image: url("assets/github.svg");
+  filter: invert(100%);
+}
+
+#clear-storage {
+  background-image: url("assets/reset.svg");
+  filter: invert(100%);
+}
+
+#qr-code {
+  background-image: url("assets/qr-code.png");
+}
+
+#github-icon:hover,
+#clear-storage:hover,
 #qr-code:hover {
   opacity: 0.6;
 }
