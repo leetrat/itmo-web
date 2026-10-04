@@ -294,13 +294,13 @@ input[type="button"]:focus-visible {
   box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
-.checkout input[type="button"][value="Убрать"] {
+.checkout input[type="button"][value="Удалить"] {
   color: var(--danger);
   background: var(--surface);
   border-color: #e6c9c4;
 }
 
-.checkout input[type="button"][value="Убрать"]:hover {
+.checkout input[type="button"][value="Удалить"]:hover {
   color: var(--accent-contrast);
   background: var(--danger);
   border-color: var(--danger);
