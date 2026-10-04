@@ -255,6 +255,46 @@ function searchInput() {
   return document.querySelector('input[type="search"]');
 }
 
+function showModal(id, title, build) {
+  let modal = document.getElementById(id);
+
+  if (!modal) {
+    modal = document.createElement("dialog");
+    modal.id = id;
+    modal.className = "modal";
+
+    const header = document.createElement("div");
+    header.className = "modal-header";
+
+    const heading = document.createElement("h2");
+    heading.className = "modal-title";
+
+    const close = document.createElement("button");
+    close.type = "button";
+    close.className = "modal-close";
+    close.textContent = "✕";
+    close.setAttribute("aria-label", "Закрыть");
+    close.addEventListener("click", () => modal.close());
+
+    const body = document.createElement("div");
+    body.className = "modal-body";
+
+    header.append(heading, close);
+    modal.append(header, body);
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) modal.close();
+    });
+
+    document.body.append(modal);
+  }
+
+  modal.querySelector(".modal-title").textContent = title;
+  build(modal.querySelector(".modal-body"));
+
+  if (!modal.open) modal.showModal();
+}
+
 function openCheckoutModal() {
   const FIELDS = [
     { name: "firstName", label: "Имя", autocomplete: "given-name", placeholder: "Иван" },
@@ -263,113 +303,114 @@ function openCheckoutModal() {
     { name: "phone", label: "Контактный номер телефона", autocomplete: "tel", placeholder: "+7 900 000-00-00" }
   ];
 
-  let modal = document.getElementById("checkout-modal");
+  showModal("checkout-modal", "Оформление заказа", (body) => {
+    let form = body.querySelector(".checkout-form");
 
-  if (!modal) {
-    modal = document.createElement("dialog");
-    modal.id = "checkout-modal";
-    modal.className = "checkout-modal";
+    if (!form) {
+      const summary = document.createElement("p");
+      summary.className = "checkout-summary";
 
-    const title = document.createElement("h2");
-    title.className = "checkout-modal-title";
-    title.textContent = "Оформление заказа";
+      form = document.createElement("form");
+      form.className = "checkout-form";
 
-    const summary = document.createElement("p");
-    summary.className = "checkout-modal-summary";
+      for (const field of FIELDS) {
+        const label = document.createElement("label");
+        label.className = "checkout-field";
+        label.append(field.label);
 
-    const form = document.createElement("form");
-    form.className = "checkout-form";
+        const input = document.createElement("input");
+        input.type = field.name === "phone" ? "tel" : "text";
+        input.name = field.name;
+        input.placeholder = field.placeholder;
+        input.autocomplete = field.autocomplete;
+        input.required = true;
 
-    for (const field of FIELDS) {
-      const label = document.createElement("label");
-      label.className = "checkout-field";
-      label.append(field.label);
+        label.append(input);
+        form.append(label);
+      }
 
-      const input = document.createElement("input");
-      input.type = field.name === "phone" ? "tel" : "text";
-      input.name = field.name;
-      input.placeholder = field.placeholder;
+      const actions = document.createElement("div");
+      actions.className = "checkout-form-actions";
 
-      input.autocomplete = field.autocomplete;
-      input.required = true;
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "checkout-modal-cancel";
+      cancel.textContent = "Отмена";
+      cancel.addEventListener("click", () => form.closest("dialog").close());
 
-      label.append(input);
-      form.append(label);
+      const submit = document.createElement("button");
+      submit.type = "submit";
+      submit.className = "checkout-submit";
+      submit.textContent = "Создать заказ";
+
+      actions.append(cancel, submit);
+      form.append(actions);
+
+      const success = document.createElement("div");
+      success.className = "checkout-success";
+      success.hidden = true;
+
+      const successText = document.createElement("p");
+      successText.textContent = "Заказ создан!";
+
+      const close = document.createElement("button");
+      close.type = "button";
+      close.className = "checkout-close";
+      close.textContent = "Закрыть";
+      close.addEventListener("click", () => form.closest("dialog").close());
+
+      success.append(successText, close);
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        saveJSON("checkout", Object.fromEntries(new FormData(form)));
+
+        cart = {};
+        saveJSON("cart", cart);
+        renderCart();
+        updateCartCount();
+
+        form.hidden = true;
+        success.hidden = false;
+      });
+
+      body.append(summary, form, success);
     }
 
-    const actions = document.createElement("div");
-    actions.className = "checkout-form-actions";
+    const saved = loadJSON("checkout", {});
 
-    const cancel = document.createElement("button");
-    cancel.type = "button";
-    cancel.className = "checkout-cancel";
-    cancel.textContent = "Отмена";
+    for (const field of FIELDS) {
+      const input = form.elements[field.name];
+      if (input && !input.value) input.value = saved[field.name] || "";
+    }
 
-    const submit = document.createElement("button");
-    submit.type = "submit";
-    submit.className = "checkout-submit";
-    submit.textContent = "Создать заказ";
+    const entries = cartEntries();
+    const count = entries.reduce((sum, [, itemCount]) => sum + itemCount, 0);
+    const total = entries.reduce((sum, [item, itemCount]) => sum + item.price * itemCount, 0);
 
-    actions.append(cancel, submit);
-    form.append(actions);
+    body.querySelector(".checkout-summary").textContent = count
+      ? "Товаров: " + count + ", сумма: $" + total
+      : "Корзина пуста";
 
-    const success = document.createElement("div");
-    success.className = "checkout-success";
-    success.hidden = true;
+    form.querySelector(".checkout-submit").disabled = count === 0;
 
-    const successText = document.createElement("p");
-    successText.textContent = "Заказ создан!";
+    form.hidden = false;
+    body.querySelector(".checkout-success").hidden = true;
+  });
+}
 
-    const close = document.createElement("button");
-    close.type = "button";
-    close.className = "checkout-close";
-    close.textContent = "Закрыть";
+function openQRModal() {
+  showModal("qr", "QR-код", (body) => {
+    if (body.querySelector(".qr-image")) return;
 
-    success.append(successText, close);
-    modal.append(title, summary, form, success);
+    const image = document.createElement("img");
+    image.className = "qr-image";
+    image.src = "assets/qr-code.png";
+    image.alt = "QR-код магазина";
 
-    cancel.addEventListener("click", () => modal.close());
-    close.addEventListener("click", () => modal.close());
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      saveJSON("checkout", Object.fromEntries(new FormData(form)));
-
-      cart = {};
-      saveJSON("cart", cart);
-      renderCart();
-      updateCartCount();
-
-      form.hidden = true;
-      success.hidden = false;
-    });
-
-    document.body.append(modal);
-  }
-
-  const form = modal.querySelector(".checkout-form");
-  const saved = loadJSON("checkout", {});
-
-  for (const field of FIELDS) {
-    const input = form.elements[field.name];
-    if (input && !input.value) input.value = saved[field.name] || "";
-  }
-
-  const entries = cartEntries();
-  const count = entries.reduce((sum, [, itemCount]) => sum + itemCount, 0);
-  const total = entries.reduce((sum, [item, itemCount]) => sum + item.price * itemCount, 0);
-
-  modal.querySelector(".checkout-modal-summary").textContent = count
-    ? "Товаров: " + count + ", сумма: $" + total
-    : "Корзина пуста";
-
-  form.querySelector(".checkout-submit").disabled = count === 0;
-
-  form.hidden = false;
-  modal.querySelector(".checkout-success").hidden = true;
-
-  if (!modal.open) modal.showModal();
+    body.append(image);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {

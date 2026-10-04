@@ -120,6 +120,18 @@ nav ul.left a:hover {
   opacity: 0.6;
 }
 
+#qr-code {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url("assets/qr-code.png") center / contain no-repeat;
+  transition: opacity var(--transition);
+}
+
+#qr-code:hover {
+  opacity: 0.6;
+}
+
 body > input[type="search"] {
   grid-area: search;
   width: 100%;
@@ -316,9 +328,9 @@ input[type="button"]:focus-visible {
   min-width: 140px;
 }
 
-.checkout-modal {
+.modal {
   width: min(460px, calc(100vw - 2 * var(--gutter)));
-  padding: 24px;
+  padding: 20px 24px 24px;
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -326,16 +338,68 @@ input[type="button"]:focus-visible {
   box-shadow: var(--shadow-card);
 }
 
-.checkout-modal::backdrop {
+.modal::backdrop {
   background: rgba(28, 27, 25, 0.45);
 }
 
-.checkout-modal-title {
-  margin: 0 0 6px;
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.modal-title {
+  margin: 0;
   font-size: 1.2rem;
 }
 
-.checkout-modal-summary {
+.modal button {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 14px;
+  color: var(--accent-contrast);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.modal button:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.modal button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.modal button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.modal-close {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  line-height: 1;
+  color: var(--text);
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.modal-close:hover:not(:disabled) {
+  color: var(--accent-contrast);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.checkout-summary {
   margin: 0 0 18px;
   font-size: 0.9rem;
   color: var(--text-muted);
@@ -377,45 +441,20 @@ input[type="button"]:focus-visible {
   margin-top: 6px;
 }
 
-.checkout-modal button {
+.checkout-form-actions button,
+.checkout-success button {
   flex: 1;
-  font: inherit;
-  font-weight: 600;
-  padding: 10px 14px;
-  color: var(--accent-contrast);
-  background: var(--text);
-  border: 1px solid var(--text);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
 }
 
-.checkout-modal button:hover:not(:disabled) {
-  background: var(--accent);
-  border-color: var(--accent);
-  transform: translateY(-1px);
-}
-
-.checkout-modal button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
-
-.checkout-modal button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-  transform: none;
-}
-
-.checkout-modal .checkout-cancel,
-.checkout-modal .checkout-close {
+.checkout-modal-cancel,
+.checkout-success button {
   color: var(--text);
   background: var(--surface-2);
   border-color: var(--border);
 }
 
-.checkout-modal .checkout-cancel:hover:not(:disabled),
-.checkout-modal .checkout-close:hover:not(:disabled) {
+.checkout-modal-cancel:hover:not(:disabled),
+.checkout-success button:hover:not(:disabled) {
   color: var(--accent-contrast);
   background: var(--text);
   border-color: var(--text);
@@ -436,8 +475,18 @@ input[type="button"]:focus-visible {
   color: var(--accent);
 }
 
-.checkout-modal [hidden] {
+.modal [hidden] {
   display: none;
+}
+
+.qr-image {
+  display: block;
+  width: 220px;
+  height: auto;
+  margin: 0 auto;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
 }
 
 @media (max-width: 1100px) {

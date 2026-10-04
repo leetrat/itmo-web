@@ -15,14 +15,15 @@
         <a href="">Вавилонский магазин</a>
       </ul>
       <ul class="right">
+        <a id="qr-code" href="#qr" onclick="openQRModal()"></a>
         <a id="github-icon" href="https://github.com/leetrat/itmo-web/tree/main/lab_1"></a>
-        <a id="qr-code" href="#qr"></a>
       </ul>
     </nav>
 
     <input type="search" placeholder="Ищите что угодно..." oninput="searchItems(this.value)">
     <div class="left">
       <section class="search-result">
+        <strong>Результаты поиска:</strong>
         <div class="item-list" id="custom-list">
 
         </div>
