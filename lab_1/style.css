@@ -175,10 +175,6 @@ section > strong {
   margin-bottom: 16px;
 }
 
-/* ---------- Сетка товаров ---------- */
-
-/* Список не выше --item-list-max-height: если товаров больше, он
-   прокручивается внутри себя, а не растягивает страницу. */
 .item-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -210,8 +206,6 @@ section > strong {
   background: var(--scrollbar-hover);
 }
 
-/* Корзина живёт в липкой боковой колонке, поэтому ограничиваем её
-   ещё сильнее, чтобы низ списка не уезжал за край экрана. */
 .checkout .item-list {
   --item-list-max-height: min(52vh, 440px);
 }
@@ -320,6 +314,130 @@ input[type="button"]:focus-visible {
 .checkout .row input[type="button"] {
   flex: 1;
   min-width: 140px;
+}
+
+.checkout-modal {
+  width: min(460px, calc(100vw - 2 * var(--gutter)));
+  padding: 24px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.checkout-modal::backdrop {
+  background: rgba(28, 27, 25, 0.45);
+}
+
+.checkout-modal-title {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+
+.checkout-modal-summary {
+  margin: 0 0 18px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkout-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.checkout-field input {
+  font: inherit;
+  padding: 10px 12px;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.checkout-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.checkout-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.checkout-modal button {
+  flex: 1;
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 14px;
+  color: var(--accent-contrast);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.checkout-modal button:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.checkout-modal button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.checkout-modal button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.checkout-modal .checkout-cancel,
+.checkout-modal .checkout-close {
+  color: var(--text);
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.checkout-modal .checkout-cancel:hover:not(:disabled),
+.checkout-modal .checkout-close:hover:not(:disabled) {
+  color: var(--accent-contrast);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.checkout-success {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.checkout-success p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.checkout-modal [hidden] {
+  display: none;
 }
 
 @media (max-width: 1100px) {

@@ -1,5 +1,4 @@
 // TODO (by priority):
-// - Checkout
 // - QR-code at #qr
 
 const featured_items = [
@@ -254,6 +253,123 @@ function searchItems(query) {
 
 function searchInput() {
   return document.querySelector('input[type="search"]');
+}
+
+function openCheckoutModal() {
+  const FIELDS = [
+    { name: "firstName", label: "Имя", autocomplete: "given-name", placeholder: "Иван" },
+    { name: "lastName", label: "Фамилия", autocomplete: "family-name", placeholder: "Иванов" },
+    { name: "address", label: "Адрес доставки", autocomplete: "street-address", placeholder: "ул. Вавилонская, 1" },
+    { name: "phone", label: "Контактный номер телефона", autocomplete: "tel", placeholder: "+7 900 000-00-00" }
+  ];
+
+  let modal = document.getElementById("checkout-modal");
+
+  if (!modal) {
+    modal = document.createElement("dialog");
+    modal.id = "checkout-modal";
+    modal.className = "checkout-modal";
+
+    const title = document.createElement("h2");
+    title.className = "checkout-modal-title";
+    title.textContent = "Оформление заказа";
+
+    const summary = document.createElement("p");
+    summary.className = "checkout-modal-summary";
+
+    const form = document.createElement("form");
+    form.className = "checkout-form";
+
+    for (const field of FIELDS) {
+      const label = document.createElement("label");
+      label.className = "checkout-field";
+      label.append(field.label);
+
+      const input = document.createElement("input");
+      input.type = field.name === "phone" ? "tel" : "text";
+      input.name = field.name;
+      input.placeholder = field.placeholder;
+
+      input.autocomplete = field.autocomplete;
+      input.required = true;
+
+      label.append(input);
+      form.append(label);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "checkout-form-actions";
+
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.className = "checkout-cancel";
+    cancel.textContent = "Отмена";
+
+    const submit = document.createElement("button");
+    submit.type = "submit";
+    submit.className = "checkout-submit";
+    submit.textContent = "Создать заказ";
+
+    actions.append(cancel, submit);
+    form.append(actions);
+
+    const success = document.createElement("div");
+    success.className = "checkout-success";
+    success.hidden = true;
+
+    const successText = document.createElement("p");
+    successText.textContent = "Заказ создан!";
+
+    const close = document.createElement("button");
+    close.type = "button";
+    close.className = "checkout-close";
+    close.textContent = "Закрыть";
+
+    success.append(successText, close);
+    modal.append(title, summary, form, success);
+
+    cancel.addEventListener("click", () => modal.close());
+    close.addEventListener("click", () => modal.close());
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      saveJSON("checkout", Object.fromEntries(new FormData(form)));
+
+      cart = {};
+      saveJSON("cart", cart);
+      renderCart();
+      updateCartCount();
+
+      form.hidden = true;
+      success.hidden = false;
+    });
+
+    document.body.append(modal);
+  }
+
+  const form = modal.querySelector(".checkout-form");
+  const saved = loadJSON("checkout", {});
+
+  for (const field of FIELDS) {
+    const input = form.elements[field.name];
+    if (input && !input.value) input.value = saved[field.name] || "";
+  }
+
+  const entries = cartEntries();
+  const count = entries.reduce((sum, [, itemCount]) => sum + itemCount, 0);
+  const total = entries.reduce((sum, [item, itemCount]) => sum + item.price * itemCount, 0);
+
+  modal.querySelector(".checkout-modal-summary").textContent = count
+    ? "Товаров: " + count + ", сумма: $" + total
+    : "Корзина пуста";
+
+  form.querySelector(".checkout-submit").disabled = count === 0;
+
+  form.hidden = false;
+  modal.querySelector(".checkout-success").hidden = true;
+
+  if (!modal.open) modal.showModal();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
