@@ -23,6 +23,10 @@
   --content-width: 1200px;
   --sidebar-width: 340px;
   --gutter: 24px;
+
+  --item-list-max-height: 60vh;
+  --scrollbar: #d3d0c8;
+  --scrollbar-hover: #b5b1a6;
 }
 
 *,
@@ -173,10 +177,43 @@ section > strong {
 
 /* ---------- Сетка товаров ---------- */
 
+/* Список не выше --item-list-max-height: если товаров больше, он
+   прокручивается внутри себя, а не растягивает страницу. */
 .item-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 16px;
+  max-height: var(--item-list-max-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+}
+
+.item-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.item-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.item-list::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border: 2px solid var(--surface);
+  border-radius: 999px;
+  transition: background var(--transition);
+}
+
+.item-list::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* Корзина живёт в липкой боковой колонке, поэтому ограничиваем её
+   ещё сильнее, чтобы низ списка не уезжал за край экрана. */
+.checkout .item-list {
+  --item-list-max-height: min(52vh, 440px);
 }
 
 .item {
