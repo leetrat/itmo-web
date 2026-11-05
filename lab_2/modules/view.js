@@ -9,6 +9,7 @@ import {
   sortTasks,
   getStats,
 } from "./taskman.js";
+import { setupHeaderActions } from "./etc.js";
 
 const state = {
   filter: "all",
@@ -130,9 +131,47 @@ function createStats() {
   return stats;
 }
 
+function createHeader() {
+  const nav = document.createElement("nav");
+
+  const left = document.createElement("ul");
+  left.className = "left";
+
+  const homeLink = document.createElement("a");
+  homeLink.href = "";
+  homeLink.textContent = "Список дел";
+  left.appendChild(homeLink);
+
+  const right = document.createElement("ul");
+  right.className = "right";
+
+  const clearStorageLink = document.createElement("a");
+  clearStorageLink.id = "clear-storage";
+  clearStorageLink.href = "#";
+  clearStorageLink.title = "Очистить localStorage";
+
+  const qrLink = document.createElement("a");
+  qrLink.id = "qr-code";
+  qrLink.href = "#";
+  qrLink.title = "QR-код";
+
+  const githubLink = document.createElement("a");
+  githubLink.id = "github-icon";
+  githubLink.href = "https://github.com/leetrat/itmo-web/tree/main/lab_2";
+  githubLink.target = "_blank";
+  githubLink.rel = "noopener noreferrer";
+  githubLink.title = "Репозиторий на GitHub";
+
+  right.append(clearStorageLink, qrLink, githubLink);
+  nav.append(left, right);
+
+  return nav;
+}
+
 function buildLayout() {
+  document.body.appendChild(createHeader());
+
   const container = createElement("div", "container");
-  container.appendChild(createElement("h1", "", "Список дел"));
   container.appendChild(createControls());
   container.appendChild(createFilterControls());
   container.appendChild(createSearchControls());
@@ -198,6 +237,18 @@ function updateActiveFilterButton() {
 function updateActiveSortButton() {
   elements.sortTextBtn.classList.toggle("active", state.sort === "text");
   elements.sortByDateBtn.classList.toggle("active", state.sort === "date");
+}
+
+function reset() {
+  state.filter = "all";
+  state.sort = "manual";
+  state.search = "";
+  state.editingId = null;
+  elements.searchInput.value = "";
+
+  updateActiveFilterButton();
+  updateActiveSortButton();
+  renderTaskList();
 }
 
 function formatTaskDate(isoString) {
@@ -347,7 +398,6 @@ function addDragAndDrop(item, taskId) {
     }
 
     if (moveTask(draggedId, taskId)) {
-      // Manual order is the only order in which drag-and-drop is meaningful.
       state.sort = "manual";
       state.editingId = null;
       updateActiveSortButton();
@@ -444,6 +494,7 @@ function renderTaskList() {
 function init() {
   buildLayout();
   setupEventListeners();
+  setupHeaderActions(reset);
   renderTaskList();
 }
 
