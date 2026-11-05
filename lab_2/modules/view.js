@@ -14,6 +14,7 @@ import { setupHeaderActions } from "./etc.js";
 const state = {
   filter: "all",
   sort: "manual",
+  sortDirection: "asc",
   search: "",
   editingId: null,
 };
@@ -95,12 +96,21 @@ function createSearchControls() {
   searchInput.autocomplete = "off";
 
   const sortTextBtn = createButton("sortTextBtn", "", "Сортировка по тексту");
+  const sortTextIndicator = createElement("span", "sort-indicator", "↕");
+  sortTextIndicator.setAttribute("aria-hidden", "true");
+  sortTextBtn.appendChild(sortTextIndicator);
+
   const sortByDateBtn = createButton("sortByDateBtn", "", "Сортировка по дате");
+  const sortByDateIndicator = createElement("span", "sort-indicator", "↕");
+  sortByDateIndicator.setAttribute("aria-hidden", "true");
+  sortByDateBtn.appendChild(sortByDateIndicator);
 
   searchSort.append(searchInput, sortTextBtn, sortByDateBtn);
   elements.searchInput = searchInput;
   elements.sortTextBtn = sortTextBtn;
   elements.sortByDateBtn = sortByDateBtn;
+  elements.sortTextIndicator = sortTextIndicator;
+  elements.sortByDateIndicator = sortByDateIndicator;
 
   return searchSort;
 }
@@ -222,7 +232,13 @@ function setupEventListeners() {
 }
 
 function setSort(sortBy) {
-  state.sort = sortBy;
+  if (state.sort === sortBy) {
+    state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
+  } else {
+    state.sort = sortBy;
+    state.sortDirection = sortBy === "date" ? "desc" : "asc";
+  }
+
   state.editingId = null;
   updateActiveSortButton();
   renderTaskList();
@@ -235,13 +251,23 @@ function updateActiveFilterButton() {
 }
 
 function updateActiveSortButton() {
-  elements.sortTextBtn.classList.toggle("active", state.sort === "text");
-  elements.sortByDateBtn.classList.toggle("active", state.sort === "date");
+  updateSortButton(elements.sortTextBtn, elements.sortTextIndicator, "text");
+  updateSortButton(elements.sortByDateBtn, elements.sortByDateIndicator, "date");
+}
+
+function updateSortButton(button, indicator, sortBy) {
+  const isActive = state.sort === sortBy;
+
+  button.classList.toggle("active", isActive);
+  button.setAttribute("aria-pressed", String(isActive));
+
+  indicator.textContent = isActive ? (state.sortDirection === "asc" ? "↑" : "↓") : "↕";
 }
 
 function reset() {
   state.filter = "all";
   state.sort = "manual";
+  state.sortDirection = "asc";
   state.search = "";
   state.editingId = null;
   elements.searchInput.value = "";
@@ -473,7 +499,8 @@ function renderTaskList() {
   const allTasks = getTasks();
   const visibleTasks = sortTasks(
     filterTasks(allTasks, state.filter, state.search),
-    state.sort
+    state.sort,
+    state.sortDirection
   );
 
   elements.taskList.replaceChildren();

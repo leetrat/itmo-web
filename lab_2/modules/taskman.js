@@ -166,19 +166,22 @@ export function filterTasks(tasks, filter = "all", searchTerm = "") {
   });
 }
 
-export function sortTasks(tasks, sortBy = "manual") {
+export function sortTasks(tasks, sortBy = "manual", direction = sortBy === "date" ? "desc" : "asc") {
   if (sortBy !== "date" && sortBy !== "text") {
     return [...tasks];
   }
 
-  return [...tasks].sort((first, second) => {
-    if (sortBy === "date") {
-      return new Date(second.createdAt) - new Date(first.createdAt);
-    }
+  const sign = direction === "desc" ? -1 : 1;
 
-    return String(first.text ?? "").localeCompare(String(second.text ?? ""), "ru", {
-      sensitivity: "base",
-    });
+  return [...tasks].sort((first, second) => {
+    const result =
+      sortBy === "date"
+        ? new Date(first.createdAt) - new Date(second.createdAt)
+        : String(first.text ?? "").localeCompare(String(second.text ?? ""), "ru", {
+            sensitivity: "base",
+          });
+
+    return result * sign;
   });
 }
 
