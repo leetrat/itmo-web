@@ -1,0 +1,124 @@
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: grid;
+        grid-template-columns: repeat(3, 56px);
+        grid-template-rows: repeat(3, 56px);
+        gap: 8px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .mobile-controls button {
+        color: #2c3e50;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.35rem;
+        line-height: 1;
+        transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .mobile-controls button:hover {
+        background: #eee4da;
+        border-color: #bbada0;
+    }
+
+    .mobile-controls button[data-direction="up"] {
+        grid-area: 1 / 2;
+    }
+
+    .mobile-controls button[data-direction="left"] {
+        grid-area: 2 / 1;
+    }
+
+    .mobile-controls button[data-direction="right"] {
+        grid-area: 2 / 3;
+    }
+
+    .mobile-controls button[data-direction="down"] {
+        grid-area: 3 / 2;
+    }
+
+    body:has(dialog[open]) .mobile-controls,
+    body:has(.game-over-overlay:not([hidden])) .mobile-controls {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        padding: 12px 10px;
+    }
+
+    nav ul {
+        gap: 12px;
+    }
+
+    nav ul.left a {
+        font-size: 1.1rem;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .game-header {
+        gap: 8px;
+    }
+
+    h1 {
+        flex-shrink: 0;
+        font-size: 1.75rem;
+        white-space: nowrap;
+    }
+
+    .header-controls {
+        gap: 6px;
+    }
+
+    .score-box {
+        min-width: 72px;
+        padding: 6px 10px;
+    }
+
+    #score {
+        font-size: 1.25rem;
+    }
+
+    .icon-button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .icon-button img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .board {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .tile {
+        font-size: 1.5rem;
+    }
+
+    .tile--128,
+    .tile--256,
+    .tile--512 {
+        font-size: 1.2rem;
+    }
+
+    .tile--1024,
+    .tile--2048 {
+        font-size: 1rem;
+    }
+
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 6px 4px;
+        font-size: 0.8rem;
+    }
+}

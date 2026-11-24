@@ -69,7 +69,7 @@ export function openQRModal() {
 
     const image = document.createElement("img");
     image.className = "qr-image";
-    image.src = "assets/qr-code.png";
+    image.src = "assets/images/qr-code.png";
     image.alt = "QR-код игры 2048";
 
     body.append(image);
