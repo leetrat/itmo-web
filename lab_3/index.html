@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="modules/view.js"></script>
+</head>
+<body>
+    <nav>
+        <ul class="left">
+            <a href="">2048</a>
+        </ul>
+        <ul class="right">
+            <a id="clear-storage" href="#" title="Очистить localStorage"></a>
+            <a id="qr-code" href="#" title="QR-код"></a>
+            <a id="github-icon" href="https://github.com/leetrat/itmo-web/tree/main/lab_3" target="_blank" rel="noopener noreferrer" title="Репозиторий на GitHub"></a>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="game-header">
+            <h1>2048</h1>
+            <div class="score-box">
+                <span class="score-label">Очки</span>
+                <strong id="score">0</strong>
+            </div>
+        </div>
+
+        <div class="game-actions">
+            <button type="button" id="undo-btn">Отмена хода</button>
+            <button type="button" id="restart-btn">Начать заново</button>
+            <button type="button" id="leaderboard-btn">Лидерборд</button>
+        </div>
+
+        <div class="board" id="board" aria-label="Игровое поле"></div>
+
+        <div class="mobile-controls" aria-label="Управление">
+            <button type="button" data-direction="up" aria-label="Вверх">↑</button>
+            <button type="button" data-direction="left" aria-label="Влево">←</button>
+            <button type="button" data-direction="right" aria-label="Вправо">→</button>
+            <button type="button" data-direction="down" aria-label="Вниз">↓</button>
+        </div>
+    </main>
+
+    <dialog id="game-over" class="modal">
+        <h2 class="modal-title" id="game-over-message">Игра окончена</h2>
+        <p class="saved-message" id="saved-message" hidden>Ваш рекорд сохранён</p>
+        <form id="score-form" class="score-form">
+            <label class="visually-hidden" for="player-name">Ваше имя</label>
+            <input id="player-name" name="player-name" type="text" placeholder="Введите имя" maxlength="20" autocomplete="off" required>
+            <button type="submit" id="save-score-btn">Сохранить результат</button>
+        </form>
+        <button type="button" id="game-over-restart-btn" class="restart-button">Начать заново</button>
+    </dialog>
+
+    <dialog id="leaderboard" class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Таблица лидеров</h2>
+            <button type="button" class="modal-close" aria-label="Закрыть">✕</button>
+        </div>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Имя пользователя</th>
+                    <th>Очки</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+        </table>
+    </dialog>
+</body>
+</html>
