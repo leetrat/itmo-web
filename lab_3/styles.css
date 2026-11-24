@@ -534,17 +534,36 @@ input:focus-visible {
     }
 
     .game-header {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
 
     h1 {
-        font-size: 2rem;
+        flex-shrink: 0;
+        font-size: 1.75rem;
+        white-space: nowrap;
+    }
+
+    .header-controls {
+        gap: 6px;
     }
 
     .score-box {
-        min-width: 80px;
+        min-width: 72px;
+        padding: 6px 10px;
+    }
+
+    #score {
+        font-size: 1.25rem;
+    }
+
+    .icon-button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .icon-button img {
+        width: 18px;
+        height: 18px;
     }
 
     .board {
