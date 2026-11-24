@@ -357,6 +357,16 @@ input:focus-visible {
     border-color: #333;
 }
 
+.qr-image {
+    display: block;
+    width: 220px;
+    height: auto;
+    margin: 0 auto;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
 .saved-message {
     margin-bottom: 14px;
     color: #27ae60;
