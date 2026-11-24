@@ -23,19 +23,27 @@
     <main class="container">
         <div class="game-header">
             <h1>2048</h1>
-            <div class="score-box">
-                <span class="score-label">Очки</span>
-                <strong id="score">0</strong>
+            <div class="header-controls">
+                <button type="button" id="undo-btn" class="icon-button" aria-label="Отмена хода" title="Отмена хода">
+                    <img src="assets/undo.svg" alt="">
+                </button>
+                <button type="button" id="leaderboard-btn" class="icon-button" aria-label="Лидерборд" title="Лидерборд">
+                    <img src="assets/leaderboard.svg" alt="">
+                </button>
+                <div class="score-box">
+                    <span class="score-label">Очки</span>
+                    <strong id="score">0</strong>
+                </div>
             </div>
         </div>
 
-        <div class="game-actions">
-            <button type="button" id="undo-btn">Отмена хода</button>
-            <button type="button" id="restart-btn">Начать заново</button>
-            <button type="button" id="leaderboard-btn">Лидерборд</button>
+        <div class="board-wrapper">
+            <div class="board" id="board" aria-label="Игровое поле"></div>
+            <div class="game-over-overlay" id="game-over-overlay" hidden>
+                <button type="button" id="overlay-restart-btn">Начать заново</button>
+                <button type="button" id="overlay-save-btn">Записать в лидерборд</button>
+            </div>
         </div>
-
-        <div class="board" id="board" aria-label="Игровое поле"></div>
 
         <div class="mobile-controls" aria-label="Управление">
             <button type="button" data-direction="up" aria-label="Вверх">↑</button>

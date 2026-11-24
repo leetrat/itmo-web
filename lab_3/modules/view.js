@@ -11,3 +11,11 @@ if (board) {
 
     board.appendChild(cells);
 }
+
+export function showGameOverOverlay() {
+    const overlay = document.getElementById("game-over-overlay");
+
+    if (overlay) {
+        overlay.hidden = false;
+    }
+}
